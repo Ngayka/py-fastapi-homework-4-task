@@ -1,13 +1,10 @@
 from datetime import date
-from typing import Optional
 
-from fastapi import UploadFile, Form, File, HTTPException
 from pydantic import BaseModel, field_validator, HttpUrl
 
 from database.models.accounts import GenderEnum
 from validation import (
     validate_name,
-    validate_image,
     validate_gender,
     validate_birth_date
 )
@@ -47,6 +44,15 @@ class UserProfileRequestSchema(BaseModel):
         return validate_birth_date(birth_date)
 
 
+    @field_validator('info')
+    @classmethod
+    def validate_info(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Info field must not be empty or whitespace only.")
+        return v
+
+
 class UserProfileResponseSchema(BaseModel):
     id: int
     user_id: int
@@ -54,5 +60,5 @@ class UserProfileResponseSchema(BaseModel):
     last_name: str
     gender: str
     date_of_birth: date
-    avatar: str
+    avatar: HttpUrl
     info: str

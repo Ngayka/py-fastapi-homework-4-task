@@ -218,7 +218,7 @@ async def activate_account(
         < now_utc
     ):
         if token_record:
-            await db.delete(token_record)
+            await db.run_sync(lambda s: s.delete(token_record))
             await db.commit()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -415,7 +415,7 @@ async def reset_password(
     async def send_email(email: str, link: str):
         await email_manager.send_password_reset_email(email=email, login_link=link)
 
-    background_tasks.add_task(send_email(email=token_record.user.email, login_link=login_link))
+    background_tasks.add_task(send_email, email=token_record.user.email, login_link=login_link)
     return MessageResponseSchema(message="Password reset successfully.")
 
 
