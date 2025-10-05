@@ -16,9 +16,9 @@ from validation import (
 class UserProfileRequestSchema(BaseModel):
     first_name: str
     last_name: str
-    gender: Optional[GenderEnum] = None
-    date_of_birth: Optional[date] = None
-    info: Optional[str] = None
+    gender: GenderEnum
+    date_of_birth: date
+    info: str
 
     model_config = {
         "from_attributes": True
@@ -47,12 +47,12 @@ class UserProfileRequestSchema(BaseModel):
         return validate_birth_date(birth_date)
 
 
-class ProfileResponseSchema(BaseModel):
+class UserProfileResponseSchema(BaseModel):
     id: int
     user_id: int
     first_name: str
     last_name: str
-    gender: Optional[str] = None
-    date_of_birth: Optional[date] = None
-    avatar: Optional[str] = None
-    info: Optional[str]
+    gender: str
+    date_of_birth: date
+    avatar: str
+    info: str
