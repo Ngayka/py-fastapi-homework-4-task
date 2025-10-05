@@ -1,7 +1,10 @@
 from logging.config import fileConfig
 
 from alembic import context
+import sys
+import os
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from database.models import movies, accounts # noqa: F401
 from database.models.base import Base
 from database.session_postgresql import sync_postgresql_engine
