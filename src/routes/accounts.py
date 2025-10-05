@@ -40,7 +40,7 @@ from security.interfaces import JWTAuthManagerInterface
 
 router = APIRouter()
 
-FRONTEND_URL = "http://localhost:8000"
+FRONTEND_URL = "http://127.0.0.1:8000"
 
 
 @router.post(
@@ -413,9 +413,9 @@ async def reset_password(
     login_link = f"{FRONTEND_URL}/reset-password/complete/"
 
     async def send_email(email: str, link: str):
-        await email_manager.send_password_reset_email(email=email, login_link=link)
+        await email_manager.send_password_reset_complete_email(email=email, login_link=link)
 
-    background_tasks.add_task(send_email, email=token_record.user.email, login_link=login_link)
+    background_tasks.add_task(send_email, email=token_record.user.email, link=login_link)
     return MessageResponseSchema(message="Password reset successfully.")
 
 
